@@ -1,3 +1,4 @@
+import 'package:api_practise/screens/add_product.dart';
 import 'package:api_practise/screens/all_products.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: 
-      AllProducts(),
+      AddProduct(),
     );
   }
 }

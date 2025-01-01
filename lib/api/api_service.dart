@@ -27,7 +27,8 @@ class ApiService {
     }
   }
 
-  //
+  //Fetch single product from Api
+
   Future<Product> fetchSingleProduct(int id) async {
     final String url = "https://fakestoreapi.com/products/$id";
 
@@ -38,12 +39,41 @@ class ApiService {
         Product product = Product.fromJson(json.decode(response.body));
         return product;
       } else {
-        print("Failed to fetch single product status code: ${response.statusCode}");
+        print(
+            "Failed to fetch single product status code: ${response.statusCode}");
         throw Exception("Failed to fetch single product");
       }
     } catch (error) {
       print("Error in fetching single product: $error");
       throw Exception("Failed to fetch single product");
     }
+  }
+}
+
+//Add a product to API
+
+Future<Product> addProduct(Product product) async {
+  const String url = "https://fakestoreapi.com/carts";
+
+  try {
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {"Content-Type": "application/json"},
+      body: json.encode(product.toJson()),
+    );
+
+    print("response status code: ${response.statusCode}");
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print("response :${response.body}");
+
+      Product newProduct = Product.fromJson(json.decode(response.body));
+      return newProduct;
+    } else {
+      print("Failed to add product status code: ${response.statusCode}");
+      throw Exception("Failed to add product");
+    }
+  } catch (error) {
+    print("Error in adding product: $error");
+    throw Exception("Failed to add product");
   }
 }

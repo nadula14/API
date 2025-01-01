@@ -1,5 +1,6 @@
 import 'package:api_practise/api/api_service.dart';
 import 'package:api_practise/models/product_model.dart';
+import 'package:api_practise/screens/single_product.dart';
 import 'package:flutter/material.dart';
 
 class AllProducts extends StatefulWidget {
@@ -36,28 +37,40 @@ class _AllProductsState extends State<AllProducts> {
                 child: Text("No Products Found"),
               );
             } else {
-              return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    Product product = snapshot.data![index];
-
-                    return Container(
-                      margin: EdgeInsets.only(bottom: 10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.grey[200],
-                      ),
-                      child: ListTile(
-                        title: Text(product.title),
-                        subtitle: Text("\$${product.price}"),
-                        leading: Image.network(
-                          product.image,
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.cover,),
-                      )
-                    );
-                  });
+              return Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          Product product = snapshot.data![index];
+                    
+                          return Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.grey[200],
+                              ),
+                              child: ListTile(
+                                  title: Text(product.title),
+                                  subtitle: Text("\$${product.price}"),
+                                  leading: Image.network(
+                                    product.image,
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,MaterialPageRoute(builder: (context)=>SingleProduct(productId: product.id!)
+                                    ),
+                                    );
+                                  }));
+                        }),
+                  ),
+                ],
+              );
+              
             }
           },
         ),
