@@ -7,7 +7,7 @@ class Product {
   final String category;
 
   Product(
-      {required this.id,
+      { this.id,
       required this.title,
       required this.price,
       required this.description,

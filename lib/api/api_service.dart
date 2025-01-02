@@ -48,32 +48,57 @@ class ApiService {
       throw Exception("Failed to fetch single product");
     }
   }
-}
 
 //Add a product to API
 
-Future<Product> addProduct(Product product) async {
-  const String url = "https://fakestoreapi.com/carts";
+  Future<Product> addProduct(Product product) async {
+    const String url = "https://fakestoreapi.com/products";
 
-  try {
-    final response = await http.post(
-      Uri.parse(url),
-      headers: {"Content-Type": "application/json"},
-      body: json.encode(product.toJson()),
-    );
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(product.toJson()),
+      );
 
-    print("response status code: ${response.statusCode}");
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      print("response :${response.body}");
+      print("response status code: ${response.statusCode}");
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("response :${response.body}");
 
-      Product newProduct = Product.fromJson(json.decode(response.body));
-      return newProduct;
-    } else {
-      print("Failed to add product status code: ${response.statusCode}");
+        Product newProduct = Product.fromJson(json.decode(response.body));
+        return newProduct;
+      } else {
+        print("Failed to add product status code: ${response.statusCode}");
+        throw Exception("Failed to add product");
+      }
+    } catch (error) {
+      print("Error in adding product: $error");
       throw Exception("Failed to add product");
     }
-  } catch (error) {
-    print("Error in adding product: $error");
-    throw Exception("Failed to add product");
+  }
+
+//Update a product in API
+
+  Future<Product> updateProduct(int id, Product product) async {
+    final String url = "https://fakestoreapi.com/products/${id}";
+   
+
+   try{
+     final response  = await http.put(
+       Uri.parse(url),
+       headers: {"Content-Type": "application/json"},
+       body: json.encode(product.toJson()),
+     );
+      if (response.statusCode == 200) {
+        Product updatedProduct = Product.fromJson(json.decode(response.body));
+        return updatedProduct;
+      } else {
+        print("Failed to update product status code: ${response.statusCode}");
+        throw Exception("Failed to update product");
+      }
+    } catch (error) {
+      print("Error in updating product: $error");
+      throw Exception("Failed to update product");
+    }
   }
 }

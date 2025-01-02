@@ -1,4 +1,5 @@
 import 'package:api_practise/api/api_service.dart';
+import 'package:api_practise/models/product_model.dart';
 import 'package:flutter/material.dart';
 
 class AddProduct extends StatefulWidget {
@@ -47,7 +48,7 @@ class _AddProductState extends State<AddProduct> {
               ),
               const SizedBox(height: 10),
               TextFormField(
-                decoration:  InputDecoration(
+                decoration: InputDecoration(
                   labelText: "Price",
                   border: OutlineInputBorder(),
                 ),
@@ -98,7 +99,19 @@ class _AddProductState extends State<AddProduct> {
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    
+                    _formKey.currentState!.save();
+
+                    Product newProduct = Product(
+                      title: title,
+                      price: price,
+                      description: description,
+                      category: category,
+                      image: image,
+                    );
+
+                    apiService.addProduct(newProduct).then((value) {
+                      Navigator.pop(context);
+                    });
                   }
                 },
                 child: const Text("Add Product"),
